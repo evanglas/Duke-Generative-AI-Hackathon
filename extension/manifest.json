@@ -16,11 +16,8 @@
         }
     ],
     "web_accessible_resources": [
-      "popup.html",
       "images/reading_16.png",
       "images/reading_48.png",
       "images/reading_128.png"
     ]
-  }
-  
-  
+}  
