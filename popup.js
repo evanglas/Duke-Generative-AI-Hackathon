@@ -1,28 +1,21 @@
-// popup.js
-document.addEventListener('DOMContentLoaded', function() {
-  var language = document.getElementById('language-select');
-  var readingLevel = document.getElementById('reading-level-select');
-
-  // Add event listeners or logic to handle the selection
-  // For example, storing the selection of language or reading level
+document.getElementById("getText").addEventListener("click", function () {
+  console.log("clicked");
+  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    chrome.tabs.sendMessage(
+      tabs[0].id,
+      { action: "logText" },
+      function (response) {
+        console.log("in resopnse");
+        if (response) {
+          // Display the selected text in the popup window.
+          document.getElementById("selectedText").textContent =
+            response.selectedText;
+        } else {
+          // Handle error or no selection case.
+          document.getElementById("selectedText").textContent =
+            "No text selected or an error occurred.";
+        }
+      }
+    );
+  });
 });
-
-// content.js
-const extensionIcon = document.createElement('img');
-extensionIcon.src = chrome.runtime.getURL('images/reading_48.png');
-extensionIcon.style.cssText = `
-position: fixed;
-bottom: 10px;
-left: 10px;
-width: 48px;
-height: 48px;
-cursor: pointer;
-z-index: 100000; // Ensure the icon is above most content
-`;
-
-extensionIcon.addEventListener('click', function() {
-const popup = window.open(chrome.runtime.getURL('popup.html'), 'extension_popup', 'width=300,height=400,status=no,scrollbars=yes,resizable=no');
-// Adjust window.open parameters as needed
-});
-
-document.body.appendChild(extensionIcon);

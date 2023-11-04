@@ -1,24 +1,20 @@
 {
-    "manifest_version": 2,
-    "name": "Smart Reading",
-    "version": "1.0",
-    "description": "Convert the text selected to the language and reading level chosen by the user",
-    "permissions": ["activeTab", "storage"],
-    "icons": {
-        "16": "images/reading_16.png",
-        "48": "images/reading_48.png",
-        "128": "images/reading_128.png"
-    },
-    "content_scripts": [
-        {
-          "matches": ["https://www.nytimes.com/*"],
-          "js": ["popup.js"]
-        }
-    ],
-    "web_accessible_resources": [
-      "popup.html",
-      "images/reading_16.png",
-      "images/reading_48.png",
-      "images/reading_128.png"
-    ]
+  "manifest_version": 3,
+  "name": "Print Selected Text",
+  "version": "1.0",
+  "permissions": ["activeTab", "scripting"],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*/"],
+      "js": ["content.js"]
+    }
+  ],
+  "icons": {
+    "16": "images/reading_16.png",
+    "48": "images/reading_48.png",
+    "128": "images/reading_128.png"
   }
+}

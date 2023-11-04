@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <link rel="stylesheet" type="text/css" href="popup.css">
-</head>
-<body>
-  <div id="popup-container">
-    <label for="language-select">Select Your language:</label>
-    <select id="language-select">
-      <option value="English">English</option>
-      <option value="Chinese">Chinese</option>
-      <option value="Spanish">Spanish</option>
-      <option value="French">French</option>
-      <option value="Japanese">Japanese</option>
-      <!-- Add more language options here -->
-    </select>
+  <head>
+    <link rel="stylesheet" type="text/css" href="popup.css" />
+  </head>
+  <body>
+    <div id="popup-container">
+      <label for="language-select">Select Your language:</label>
+      <select id="language-select">
+        <option value="English">English</option>
+        <option value="Chinese">Chinese</option>
+        <option value="Spanish">Spanish</option>
+        <option value="French">French</option>
+        <option value="Japanese">Japanese</option>
+        <!-- Add more language options here -->
+      </select>
 
-    <label for="reading-level-select">Select Your Reading Level:</label>
-    <select id="reading-level-select">
-      <option value="Beginner">Beginner: Age 5 - 10</option>
-      <option value="Intermediate">Intermediate: Age 11 - 15</option>
-      <option value="Advanced">Advanced: Age 16 - 20</option>
-      <!-- Add more reading level options here -->
-    </select>
-  </div>
-  <script src="popup.js"></script>
-</body>
+      <label for="reading-level-select">Select Your Reading Level:</label>
+      <select id="reading-level-select">
+        <option value="Beginner">Beginner: Age 5 - 10</option>
+        <option value="Intermediate">Intermediate: Age 11 - 15</option>
+        <option value="Advanced">Advanced: Age 16 - 20</option>
+        <!-- Add more reading level options here -->
+      </select>
+      <div id="selectedText">test</div>
+      <button id="getText">Get Text</button>
+    </div>
+    <script src="popup.js"></script>
+  </body>
 </html>
