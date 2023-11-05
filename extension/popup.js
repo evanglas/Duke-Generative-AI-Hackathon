@@ -1,6 +1,9 @@
+//Exporting the language and readingLevel to make it accessible to other javascript files
+const language = '';
+const readingLevel = 0;
 // icon
 const extensionIcon = document.createElement('img');
-extensionIcon.src = chrome.runtime.getURL('images/reading_128.png');
+extensionIcon.src = chrome.runtime.getURL('images/reading_128.png'); 
 extensionIcon.style.cssText = `
   position: fixed;
   bottom: 10px;
@@ -87,9 +90,19 @@ popup.addEventListener('click', function(event) {
 
 // get the result after submit
 document.getElementById('popup-submit').addEventListener('click', function() {
-    const language = document.getElementById('language-select').value;
-    const readingLevel = document.getElementById('reading-level-select').value;
+    language = document.getElementById('language-select').value;
+    readingLevel = document.getElementById('reading-level-select').value;
+
+    console.log('The language is: ', language, 'The level is: ', readingLevel);
 
     // close the popup
     popup.style.display = 'none';
 });
+
+function shareLanguage() {
+  return language;
+}
+
+function shareReadingLevel(){
+  return readingLevel;
+}
