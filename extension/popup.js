@@ -1,9 +1,3 @@
-// //Exporting the language and readingLevel to make it accessible to other javascript files
-const language = '';
-const readingLevel = 0;
-const rephrase = '';
-const translate = '';
-
 // icon
 const extensionIcon = document.createElement('img');
 extensionIcon.src = chrome.runtime.getURL('images/reading_128.png');
@@ -93,13 +87,104 @@ popup.addEventListener('click', function(event) {
     event.stopPropagation();
 });
 
+
+
+//Openai Translate the text based on the text and the level
+const OpenAI = require("openai");
+const API_KEY = 'YOUR_API_KEY';
+const openai = new OpenAI({apiKey: API_KEY});
+
+var text = 'Hi, How are you today?';
+let language = '';
+let level = '';
+
 // get the result after submit
 document.getElementById('popup-submit').addEventListener('click', function() {
-    const language = document.getElementById('language-select').value;
-    const readingLevel = document.getElementById('reading-level-select').value;
+    language = document.getElementById('language-select').value;
+    readingLevel = document.getElementById('reading-level-select').value;
 
     console.log("Language chosen is: ", language, "reading chosen is: ", readingLevel);
+    run();
 
     // close the popup
     popup.style.display = 'none';
 });
+
+
+
+async function main(language, level, text) {
+  try {
+      // Use the parameters in your API call or any other logic
+      const promptText = `Translate '${text}' into ${language} at ${level} level`;
+      console.log(promptText);
+
+      const completion = await openai.completions.create({
+          model: "gpt-3.5-turbo-instruct",
+          prompt: promptText,
+          max_tokens: 50,  // Adjust as needed
+          temperature: 0,
+      });
+
+      return completion.choices[0].text.trim();
+  } catch (error) {
+      console.error('Error with OpenAI request:', error);
+      return "Error occurred";
+  }
+}
+
+async function run() {
+  console.log('hi');
+  text = 'Hi! Today is a good day!';
+  level = 'Beginner';
+  language = 'French';
+  const result = await main(language, level, text);
+  console.log('Here: ', result); // This should now print the translation or "Error occurred"
+}
+
+// // listen for a request message from the content script
+// chrome.runtime.onMessage.addListener(async function (request) {
+//   //Get API key
+//   const API_KEY = 'YOUR_API_KEY';
+//   const openai = new OpenAI({apiKey: API_KEY});
+
+//   // check if the request contains a message that the user sent a new message
+//   if (request.input) {
+//       // Add the user's message to the message array
+//       messageArray.push({ role: "user", "content": request.input });
+
+//       try {
+//           // send the request containing the messages to the OpenAI API
+//           const response = await openai.completions.create({
+//             model: "gpt-3.5-turbo-instruct",
+//             prompt: promptText,
+//             max_tokens: 50,  // Adjust as needed
+//             temperature: 0,
+//         });
+  
+//           // check if the API response is ok Else throw an error
+//           if (!response.ok) {
+//               throw new Error(`Failed to fetch. Status code: ${response.status}`);
+//           }
+
+//           // get the data from the API response as json
+//           let data = await response.json();
+
+//           // check if the API response contains an answer
+//           if (data && data.choices && data.choices.length > 0) {
+//               // get the answer from the API response
+//               let response = data.choices[0].message.content;
+//               console.log(response);
+
+//               // send the answer back to the content script
+//               chrome.runtime.sendMessage({ answer: response });
+
+//               // Add the response from the assistant to the message array
+//               messageArray.push({ role: "assistant", "content": response });
+//           }
+//       } catch (error) {
+//           // send error message back to the content script
+//           chrome.runtime.sendMessage({ answer: "No answer Received: Make sure the entered API-Key is correct." });
+//       }
+//   }
+// });
+

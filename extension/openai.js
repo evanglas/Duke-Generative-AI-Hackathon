@@ -1,7 +1,10 @@
 const OpenAI = require("openai");
 
-const API_KEY = 'YOUR-API-KEY';
+const API_KEY = 'YOUR_API_KEY';
 const openai = new OpenAI({apiKey: API_KEY});
+
+// Original text
+let text = "I have an apple. I like the taste of apple.";
 
 async function main(language, level, text) {
   try {
@@ -15,7 +18,6 @@ async function main(language, level, text) {
           max_tokens: 50,  // Adjust as needed
           temperature: 0,
       });
-
       return completion.choices[0].text.trim();
   } catch (error) {
       console.error('Error with OpenAI request:', error);
@@ -33,3 +35,14 @@ async function run() {
 
 run();
 
+// function changeText(newText) {
+//   console.log('The new text is: ', newText);
+//   const element = document.getElementById('sampleText');
+//   element.textContent = newText;
+// }
+
+
+function changeText() {
+  const element = document.getElementById('sampleText');
+  element.textContent = 'The text has been changed!';
+}
