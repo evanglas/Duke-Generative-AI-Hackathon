@@ -1,9 +1,12 @@
-//Exporting the language and readingLevel to make it accessible to other javascript files
+// //Exporting the language and readingLevel to make it accessible to other javascript files
 const language = '';
 const readingLevel = 0;
+const rephrase = '';
+const translate = '';
+
 // icon
 const extensionIcon = document.createElement('img');
-extensionIcon.src = chrome.runtime.getURL('images/reading_128.png'); 
+extensionIcon.src = chrome.runtime.getURL('images/reading_128.png');
 extensionIcon.style.cssText = `
   position: fixed;
   bottom: 10px;
@@ -21,9 +24,11 @@ const popup = document.createElement('div');
 popup.style.cssText = `
   display: none;
   position: fixed;
+  width: 300px;
+  height: 250px;
+  overflow: auto;
   bottom: 60px;
   right: 10px;
-  width: 300px;
   background-color: #ffffff;
   color: #333333;
   border: none;
@@ -38,7 +43,7 @@ popup.style.cssText = `
 
 // content
 popup.innerHTML = `
-  <div id="popup-container" style="text-align: center;">
+  <div id="popup-container" style="text-align: center; font-size: 14px;">
     <div style="margin-bottom: 20px;">
     <label for="language-select" style="display: block; margin-bottom: 10px;"><span style="font-weight: bold;">Select Your Language:</span></label>
     <select id="language-select" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ddd; box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);">
@@ -90,19 +95,11 @@ popup.addEventListener('click', function(event) {
 
 // get the result after submit
 document.getElementById('popup-submit').addEventListener('click', function() {
-    language = document.getElementById('language-select').value;
-    readingLevel = document.getElementById('reading-level-select').value;
+    const language = document.getElementById('language-select').value;
+    const readingLevel = document.getElementById('reading-level-select').value;
 
-    console.log('The language is: ', language, 'The level is: ', readingLevel);
+    console.log("Language chosen is: ", language, "reading chosen is: ", readingLevel);
 
     // close the popup
     popup.style.display = 'none';
 });
-
-function shareLanguage() {
-  return language;
-}
-
-function shareReadingLevel(){
-  return readingLevel;
-}
