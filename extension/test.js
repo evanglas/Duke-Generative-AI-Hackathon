@@ -81,3 +81,17 @@ chrome.runtime.onMessage.addListener(async function (request) {
     // return true to indicate that the message has been handled
     return true;
 });
+
+        // <option value="1st Grade">1st Grade</option>
+        // <option value="2nd Grade">2nd Grade</option>
+        // <option value="3rd Grade">3rd Grade</option>
+        // <option value="4th Grade">4th Grade</option>
+        // <option value="5th Grade">5th Grade</option>
+        // <option value="6th Grade">6th Grade</option>
+        // <option value="7th Grade">7th Grade</option>
+        // <option value="8th Grade">8th Grade</option>
+        // <option value="9th Grade">9th Grade</option>
+        // <option value="10th Grade">10th Grade</option>
+        // <option value="11th Grade">11th Grade</option>
+        // <option value="12th Grade">12th Grade</option>
+     

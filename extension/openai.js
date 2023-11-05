@@ -3,9 +3,6 @@ const OpenAI = require("openai");
 const API_KEY = 'YOUR_API_KEY';
 const openai = new OpenAI({apiKey: API_KEY});
 
-// Original text
-let text = "I have an apple. I like the taste of apple.";
-
 async function main(language, level, text) {
   try {
       // Use the parameters in your API call or any other logic
