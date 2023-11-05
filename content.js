@@ -1,3 +1,5 @@
+// Has access to the DOM of the current tab
+
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.action === "logText") {
     const selectedText = window.getSelection().toString();

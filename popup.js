@@ -1,3 +1,6 @@
+// Sends a message to the content script to log the selected text.
+// It then receives a message back from content.js to modify itself.
+
 document.getElementById("getText").addEventListener("click", function () {
   console.log("clicked");
   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
