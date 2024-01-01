@@ -1,25 +1,56 @@
+let uiContainer;
+let apiKeyInput;
+let apiKeyButton;
+let translateButton;
+let elucidateLogo;
+let currentApiKey;
+let defaultKeyButton;
+let languageSelect;
+
 async function insertUI() {
-  console.log("Inserting UI");
   try {
     const response = await fetch(chrome.runtime.getURL("ui.html"));
     const uiHtml = await response.text();
 
-    const uiContainer = document.createElement("div");
+    uiContainer = document.createElement("div");
     uiContainer.innerHTML = uiHtml;
 
     document.body.appendChild(uiContainer);
   } catch (error) {
     console.error("Failed to load UI:", error);
   }
-  console.log("UI inserted");
 
-  const elucidateLogo = document.getElementById("elucidateLogo");
-  elucidateLogo.src = chrome.runtime.getURL("icons/48.png");
+  elucidateLogo = document.getElementById("elucidateLogo");
+  elucidateLogo.src = chrome.runtime.getURL("icons/logo_48.png");
   elucidateLogo.addEventListener("click", toggleUI);
 
-  const translateButton = document.getElementById("translateButton");
+  translateButton = document.getElementById("translateButton");
   translateButton.addEventListener("click", translateSelection);
+
+  apiKeyButton = document.getElementById("apiKeyButton");
+  apiKeyButton.addEventListener("click", saveApiKey);
+
+  apiKeyInput = document.getElementById("apiKeyInput");
+  apiKeyInput.addEventListener("input", apiKeyChanged);
+  enterSavedKey();
+
+  defaultKeyButton = document.getElementById("defaultKeyButton");
+  defaultKeyButton.addEventListener("click", toggleDefaultKey);
+
+  languageSelect = document.getElementById("languageSelect");
+  rlSelect = document.getElementById("rlSelect");
 }
+
+function toggleUIContainer() {
+  uiContainer.style.display =
+    uiContainer.style.display === "none" ? "block" : "none";
+}
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === "toggleUIContainer") {
+    toggleUIContainer();
+  }
+});
 
 async function getReplacement(apiKey, language, readingLevel, selectedText) {
   let message = [
@@ -34,9 +65,18 @@ async function getReplacement(apiKey, language, readingLevel, selectedText) {
     { role: "user", content: selectedText },
   ];
 
+  let endpoint;
+
+  if (apiKey) {
+    endpoint = "https://api.openai.com/v1/chat/completions";
+  } else {
+    endpoint =
+      "https://foybrayfiauncvja5ngxpfvdae0weiah.lambda-url.us-east-2.on.aws/";
+  }
+
   let text_response = "";
   try {
-    let response = await fetch("https://api.openai.com/v1/chat/completions", {
+    let response = await fetch(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -73,9 +113,9 @@ async function translateSelection() {
   if (selectedText.length > 0) {
     let range = selection.getRangeAt(0);
     range.deleteContents();
-    const apiKey = document.getElementById("apiKey").value;
-    const language = document.getElementById("languageSelect").value;
-    const readingLevel = document.getElementById("rlSelect").value;
+    const apiKey = defaultKeyButton.checked ? null : apiKeyInput.value;
+    const language = languageSelect.value;
+    const readingLevel = rlSelect.value;
     try {
       replacementText = await getReplacement(
         apiKey,
@@ -87,6 +127,49 @@ async function translateSelection() {
       console.error("API call failed:", error);
     }
     range.insertNode(document.createTextNode(replacementText));
+  }
+}
+
+function saveApiKey() {
+  const apiKey = apiKeyInput.value;
+  chrome.storage.sync.set({ apiKey: apiKey }, function () {
+    console.log("API key saved");
+  });
+  currentApiKey = apiKey;
+  apiKeyButton.textContent = "✓";
+  apiKeyButton.disabled = true;
+}
+
+function apiKeyChanged() {
+  const apiKey = apiKeyInput.value;
+  if (apiKey != currentApiKey) {
+    apiKeyButton.disabled = false;
+    apiKeyButton.textContent = "Save";
+  } else {
+    apiKeyButton.disabled = true;
+    apiKeyButton.textContent = "✓";
+  }
+}
+
+function enterSavedKey() {
+  chrome.storage.sync.get(["apiKey"], function (result) {
+    if (result.apiKey) {
+      apiKeyInput.value = result.apiKey;
+      apiKeyButton.disabled = true;
+      currentApiKey = result.apiKey;
+      apiKeyButton.textContent = "✓";
+    }
+  });
+}
+
+function toggleDefaultKey() {
+  if (defaultKeyButton.checked) {
+    apiKeyInput.disabled = true;
+    apiKeyButton.disabled = true;
+  } else {
+    apiKeyInput.disabled = false;
+    apiKeyButton.disabled = false;
+    apiKeyChanged();
   }
 }
 

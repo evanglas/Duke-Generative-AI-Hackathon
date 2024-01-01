@@ -9,30 +9,40 @@
     <div id="uiContainer">
       <div id="uiForm">
         <div class="form-group">
-          <label for="languageSelect">Language:</label>
+          <label for="languageSelect">Language</label>
           <select id="languageSelect">
             <option value="English">English</option>
+            <option value="Mandarin Chinese">Mandarin Chinese</option>
+            <option value="Hindi">Hindi</option>
             <option value="Spanish">Spanish</option>
             <option value="French">French</option>
-            <option value="German">German</option>
-            <option value="Korean">Korean</option>
-            <option value="Japanese">Japanese</option>
-            <option value="All Emoji">Emoji</option>
-            <option value="Valley Girl English">VG</option>
           </select>
         </div>
         <div class="form-group">
-          <label for="rlSelect">Reading Level:</label>
+          <label for="rlSelect">Reading Level</label>
           <select id="rlSelect">
             <option value="Elementary">Elementary School</option>
             <option value="Middle">Middle School</option>
             <option value="High">High School</option>
             <option value="College">College</option>
+            <option value="Expert">Expert</option>
           </select>
         </div>
         <div class="form-group">
-          <label for="apiKey">API Key:</label>
-          <input type="text" id="apiKey" placeholder="Enter API Key" value="" />
+          <label for="apiKeyForm">OpenAI API Key</label>
+          <div id="apiKeyForm">
+            <input
+              type="text"
+              id="apiKeyInput"
+              placeholder="Enter API Key"
+              value=""
+            />
+            <button id="apiKeyButton">Save</button>
+          </div>
+        </div>
+        <div class="form-group-one-line">
+          <label for="defaultKeyButton">Use default API key</label>
+          <input type="checkbox" id="defaultKeyButton" />
         </div>
         <button id="translateButton">Translate Text</button>
       </div>
