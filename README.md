@@ -1,64 +1,23 @@
-# Duke-Generative-AI-Hackathon
+# Elucidate
 
-This is a Chrome Extension that translates webpage text to different reading levels and different languages.
+Elucidate is a Chrome extension to change the reading level and language of selected text using GPT-3.5.
 
-## Team Members
+## Description
 
-Evan Glas (ejg38)
-Luxin Zhang (lz211)
-Junhan Xu (jx139)
+Elucidate may be used to convert highlighted text on any website to a different reading level, language, or both. When activated, this extension deletes selected text on a website, calls the OpenAI API for a translated version, then places the new text in the original text's place. Elucidate will generally complete a translation within a few seconds, however, the translation time will increase roughly linearly with the length of the selected text. We anticipate three main use cases for this extension:
 
-## Motivation
+1. To convert pieces of text to more approachable versions for those developing their reading skills.
+2. To covert technically-dense passages into more generally accessible translations.
+3. To facilitate learning another language by enabling a user to practice reading text in their target language at a comfortable reading level.
 
-Much of the internet is inaccessible to individuals without advanced reading skills.
-Expand the accessibility of websites on the internet
-The Internet can be an inaccessible place for young students
-Literacy skills are highly variable across the world.
-Poorer countries may have lower literacy rates, adults may struggle to engage with most written language on the internet.
-Mainstream media may also use dialects/formalisms unfamiliar to those from diverse backgrounds
-Provide a tool to help individuals learn a language by translating texts to another language at a comfortable reading level
-For instance, could convert the New York Times to Spanish, but at the reading level of an elementary school student.
-(Maybe) Convert dense, formal language into more casual text to make reading more enjoyable and faster.
+This project represents a continuation of our submission to the Duke Generative AI Hackathon [(Hackathon DevPost)](https://devpost.com/software/elucidate-ycvbs5).
 
-## Planned Deliverable
+## Usage
 
-Google Chrome Extension
-
-1. UI
-   Provide the ability to select a reading level
-   Provide the ability to select language
-   (Maybe) Provide the ability to make the text more casual/less formal. (E.g., maybe to reduce the amount of technical jargon in a scientific paper or make a legal document clearer to an everyday reader or translate some ancient quotes to modern understandable words)
-2. Functions
-   Scrape the text off of a website
-   Translate the text to the desired format using ChatGPT API
-
-## Project Breakdown
-
-1.  UI
-    - Window users can open in Chrome
-    - Ability to select a desired reading level
-    - Ability to select the desired language
-    - Pretty visual aesthetic
-    - Extension clickable icon on the webpage
-2.  Logic
-
-    - Ability to scrape desired text off of a website
-      - Paragraphs
-      - Headers
-      - Titles
-    - Ability to take parameters from the UI
-
-      - Desired reading level
-      - Language
-
-    - Ability to send text to OpenAI API along with desired parameters
-    - Ability to replace the text on the website with the corresponding reformatted text
-      OpenAI API
-    - Ability to work with ChatGPT API to get desired output for each combination of parameters
-      May need to “engineer” a set of prompts that work
-
-## Implementation
-
-1. Selection:
-   Language Preference
-   Reading Level
+1. Pin the Elucidate extension to the Chrome bookmarks bar.
+2. Click on the Elucidate logo in the bookmarks bar to toggle the visibility of the Elucidate UI.
+3. The Elucidate logo should be visible on the bottom left corner of the Chrome Window. Click on the logo to access the Elucidate UI.
+4. Highlight a selection of text you would like to translate.
+5. Choose a desired language and reading level in the UI.
+6. If you have access to an OpenAPI secret key, please save that key using the appropriate input. Any provided API key remains completely on local storage and is secured via the Chrome storage API. As Elucidate has limited API credits, we would prefer that users use their own key when possible. Otherwise, you may check the box next to "Use default API key" to use an Elucidate-provided API key.
+7. Click "Translate Text", wait a moment, and the translation should soon appear in the selected text's place.
