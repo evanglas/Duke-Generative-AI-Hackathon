@@ -1,0 +1,1 @@
+This extension may use the Chrome storage API to locally save a provided API key. Selected text on a webpage is sent to the OpenAI API to generate a translated version.

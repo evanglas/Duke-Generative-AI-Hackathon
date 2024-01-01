@@ -19,5 +19,5 @@ This project represents a continuation of our submission to the Duke Generative 
 3. The Elucidate logo should be visible on the bottom left corner of the Chrome Window. Click on the logo to access the Elucidate UI.
 4. Highlight a selection of text you would like to translate.
 5. Choose a desired language and reading level in the UI.
-6. If you have access to an OpenAPI secret key, please save that key using the appropriate input. Any provided API key remains completely on local storage and is secured via the Chrome storage API. As Elucidate has limited API credits, we would prefer that users use their own key when possible. Otherwise, you may check the box next to "Use default API key" to use an Elucidate-provided API key.
+6. If you have access to an OpenAI API secret key, please save that key using the appropriate input. Any provided API key remains completely on local storage and is secured via the Chrome storage API. As Elucidate has limited API credits, we would prefer that users use their own key when possible. Otherwise, you may check the box next to "Use default API key" to use an Elucidate-provided API key.
 7. Click "Translate Text", wait a moment, and the translation should soon appear in the selected text's place.
