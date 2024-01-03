@@ -18,10 +18,6 @@
     }
   ],
   "permissions": ["storage"],
-  "host_permissions": [
-    "https://api.openai.com/*",
-    "https://foybrayfiauncvja5ngxpfvdae0weiah.lambda-url.us-east-2.on.aws/*"
-  ],
   "background": {
     "service_worker": "background.js"
   },
