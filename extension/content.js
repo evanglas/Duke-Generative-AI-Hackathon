@@ -1,10 +1,6 @@
 let uiContainer;
-let apiKeyInput;
-let apiKeyButton;
 let translateButton;
 let elucidateLogo;
-let currentApiKey;
-let defaultKeyButton;
 let languageSelect;
 
 async function insertUI() {
@@ -27,16 +23,6 @@ async function insertUI() {
   translateButton = document.getElementById("translateButton");
   translateButton.addEventListener("click", translateSelection);
 
-  apiKeyButton = document.getElementById("apiKeyButton");
-  apiKeyButton.addEventListener("click", saveApiKey);
-
-  apiKeyInput = document.getElementById("apiKeyInput");
-  apiKeyInput.addEventListener("input", apiKeyChanged);
-  enterSavedKey();
-
-  defaultKeyButton = document.getElementById("defaultKeyButton");
-  defaultKeyButton.addEventListener("click", toggleDefaultKey);
-
   languageSelect = document.getElementById("languageSelect");
   rlSelect = document.getElementById("rlSelect");
 }
@@ -52,7 +38,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 });
 
-async function getReplacement(apiKey, language, readingLevel, selectedText) {
+async function getReplacement(language, readingLevel, selectedText) {
   let message = [
     {
       role: "system",
@@ -65,14 +51,8 @@ async function getReplacement(apiKey, language, readingLevel, selectedText) {
     { role: "user", content: selectedText },
   ];
 
-  let endpoint;
-
-  if (apiKey) {
-    endpoint = "https://api.openai.com/v1/chat/completions";
-  } else {
-    endpoint =
-      "https://foybrayfiauncvja5ngxpfvdae0weiah.lambda-url.us-east-2.on.aws/";
-  }
+  const endpoint =
+    "https://foybrayfiauncvja5ngxpfvdae0weiah.lambda-url.us-east-2.on.aws/";
 
   let text_response = "";
   try {
@@ -80,7 +60,7 @@ async function getReplacement(apiKey, language, readingLevel, selectedText) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + apiKey,
+        Authorization: "Bearer ",
       },
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
@@ -111,14 +91,24 @@ async function translateSelection() {
   const selectedText = selection.toString();
   let replacementText = "";
   if (selectedText.length > 0) {
-    let range = selection.getRangeAt(0);
-    range.deleteContents();
-    const apiKey = defaultKeyButton.checked ? null : apiKeyInput.value;
     const language = languageSelect.value;
     const readingLevel = rlSelect.value;
+
+    let range = selection.getRangeAt(0);
+    range.deleteContents();
+
+    let span = document.createElement("span");
+    span.innerHTML =
+      "<br><br> Loading text " +
+      "in <strong>" +
+      language +
+      "</strong> at <strong>" +
+      readingLevel +
+      "</strong> reading level...<br><br>";
+    range.insertNode(span);
+
     try {
       replacementText = await getReplacement(
-        apiKey,
         language,
         readingLevel,
         selectedText
@@ -126,50 +116,9 @@ async function translateSelection() {
     } catch (error) {
       console.error("API call failed:", error);
     }
+
+    range.deleteContents();
     range.insertNode(document.createTextNode(replacementText));
-  }
-}
-
-function saveApiKey() {
-  const apiKey = apiKeyInput.value;
-  chrome.storage.sync.set({ apiKey: apiKey }, function () {
-    console.log("API key saved");
-  });
-  currentApiKey = apiKey;
-  apiKeyButton.textContent = "✓";
-  apiKeyButton.disabled = true;
-}
-
-function apiKeyChanged() {
-  const apiKey = apiKeyInput.value;
-  if (apiKey != currentApiKey) {
-    apiKeyButton.disabled = false;
-    apiKeyButton.textContent = "Save";
-  } else {
-    apiKeyButton.disabled = true;
-    apiKeyButton.textContent = "✓";
-  }
-}
-
-function enterSavedKey() {
-  chrome.storage.sync.get(["apiKey"], function (result) {
-    if (result.apiKey) {
-      apiKeyInput.value = result.apiKey;
-      apiKeyButton.disabled = true;
-      currentApiKey = result.apiKey;
-      apiKeyButton.textContent = "✓";
-    }
-  });
-}
-
-function toggleDefaultKey() {
-  if (defaultKeyButton.checked) {
-    apiKeyInput.disabled = true;
-    apiKeyButton.disabled = true;
-  } else {
-    apiKeyInput.disabled = false;
-    apiKeyButton.disabled = false;
-    apiKeyChanged();
   }
 }
 
