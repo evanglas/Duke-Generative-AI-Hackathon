@@ -1,1 +1,1 @@
-Selected text on a webpage is sent to the OpenAI API via an AWS Lambda function to generate a translated version.
+Selected text on a webpage is sent to the OpenAI API via an AWS Lambda function to generate a translated version. The use of information received from Google APIs will adhere to the Chrome Web Store User Data Policy, including the Limited Use requirements.
