@@ -14,11 +14,11 @@
 }
 
 #uiForm {
+  display: none;
   background-color: rgba(255, 255, 255, 0.95);
   padding: 5px;
   width: 300px;
   height: auto;
-  display: none;
   color: #333333;
   border: none;
   border-radius: 8px;

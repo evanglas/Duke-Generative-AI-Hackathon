@@ -2,32 +2,56 @@ let uiContainer;
 let translateButton;
 let elucidateLogo;
 let languageSelect;
+let shadow;
 
 async function insertUI() {
+  if (document.readyState === "loading") {
+    await new Promise((resolve) => {
+      document.addEventListener("DOMContentLoaded", resolve);
+    });
+  }
+
   try {
-    const response = await fetch(chrome.runtime.getURL("ui.html"));
-    const uiHtml = await response.text();
+    const uiResponse = await fetch(chrome.runtime.getURL("ui.html"));
+    const uiHtml = await uiResponse.text();
+
+    const styleResponse = await fetch(chrome.runtime.getURL("ui.css"));
+    const uiCss = await styleResponse.text();
+
+    uiShadowContainer = document.createElement("div");
+    document.body.appendChild(uiShadowContainer);
 
     uiContainer = document.createElement("div");
+    const uiStyle = document.createElement("style");
+
+    shadow = uiShadowContainer.attachShadow({ mode: "open" });
+
+    uiStyle.textContent = uiCss;
     uiContainer.innerHTML = uiHtml;
 
-    document.body.appendChild(uiContainer);
+    shadow.appendChild(uiStyle);
+    shadow.appendChild(uiContainer);
   } catch (error) {
     console.error("Failed to load UI:", error);
   }
 
-  elucidateLogo = document.getElementById("elucidateLogo");
+  elucidateLogo = shadow.querySelector("#elucidateLogo");
   elucidateLogo.src = chrome.runtime.getURL("icons/logo_48.png");
   elucidateLogo.addEventListener("click", toggleUI);
 
-  translateButton = document.getElementById("translateButton");
+  translateButton = shadow.querySelector("#translateButton");
   translateButton.addEventListener("click", translateSelection);
 
-  languageSelect = document.getElementById("languageSelect");
+  languageSelect = shadow.querySelector("#languageSelect");
   rlSelect = document.getElementById("rlSelect");
+
+  console.log("UI loaded");
 }
 
-function toggleUIContainer() {
+async function toggleUIContainer() {
+  if (!uiContainer) {
+    await insertUI();
+  }
   uiContainer.style.display =
     uiContainer.style.display === "none" ? "block" : "none";
 }
@@ -78,11 +102,11 @@ async function getReplacement(language, readingLevel, selectedText) {
 }
 
 function toggleUI() {
-  const uiContainer = document.getElementById("uiForm");
-  if (uiContainer.style.display != "block") {
-    uiContainer.style.display = "block";
+  const uiForm = shadow.querySelector("#uiForm");
+  if (window.getComputedStyle(uiForm).display != "block") {
+    uiForm.style.display = "block";
   } else {
-    uiContainer.style.display = "none";
+    uiForm.style.display = "none";
   }
 }
 
