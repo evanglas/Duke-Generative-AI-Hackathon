@@ -3,6 +3,8 @@ let translateButton;
 let elucidateLogo;
 let languageSelect;
 let shadow;
+let languages;
+let rlSelect;
 
 async function insertUI() {
   if (document.readyState === "loading") {
@@ -17,6 +19,12 @@ async function insertUI() {
 
     const styleResponse = await fetch(chrome.runtime.getURL("ui.css"));
     const uiCss = await styleResponse.text();
+
+    const languagesResponse = await fetch(
+      chrome.runtime.getURL("languages.json")
+    );
+    languages = await languagesResponse.json();
+    languages.sort();
 
     uiShadowContainer = document.createElement("div");
     document.body.appendChild(uiShadowContainer);
@@ -43,9 +51,14 @@ async function insertUI() {
   translateButton.addEventListener("click", translateSelection);
 
   languageSelect = shadow.querySelector("#languageSelect");
-  rlSelect = document.getElementById("rlSelect");
+  languages.forEach((language) => {
+    const option = document.createElement("option");
+    option.text = language;
+    languageSelect.add(option);
+  });
+  languageSelect.value = "English";
 
-  console.log("UI loaded");
+  rlSelect = shadow.querySelector("#rlSelect");
 }
 
 async function toggleUIContainer() {

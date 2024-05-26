@@ -20,7 +20,7 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["ui.html", "ui.css", "icons/*"],
+      "resources": ["ui.html", "ui.css", "languages.json", "icons/*"],
       "matches": ["<all_urls>"]
     }
   ],
